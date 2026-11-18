@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09090d">
+  <meta name="description" content="PH-View — moteur de découverte multi-plateforme.">
+  <title>PH-View — Video discovery</title>
+  <style>
+    :root{color-scheme:dark;--bg:#09090d;--panel:#111117;--panel2:#171720;--line:#292936;--muted:#9292a3;--text:#f5f5f7;--accent:#ff3158;--accent2:#ff684a;--blue:#65a9ff;--radius:18px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#29202a 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select{font:inherit}button{cursor:pointer}.shell{width:min(1200px,calc(100% - 36px));margin:auto}
+    header{height:76px;border-bottom:1px solid #ffffff12;background:#09090dcc;backdrop-filter:blur(18px);position:sticky;top:0;z-index:10}
+    .top{height:100%;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text);font-weight:850;font-size:21px;letter-spacing:-.8px}.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;box-shadow:0 8px 28px #ff315833}.logo svg{width:19px}.brand em{font-style:normal;color:var(--accent)}
+    .topnote{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:7px 11px;border-radius:999px}
+    main{padding:54px 0 70px}.hero{text-align:center;max-width:760px;margin:0 auto 34px}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#ff8095;font-size:11px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase}.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}h1{font-size:clamp(34px,6vw,58px);line-height:1.04;letter-spacing:-2.7px;margin:15px 0 14px}.gradient{background:linear-gradient(100deg,#fff 15%,#ff8298 55%,#ff704b);color:transparent;background-clip:text}.hero p{color:var(--muted);font-size:16px;margin:0}
+    .searchbox{max-width:850px;margin:30px auto 0;padding:8px;background:#15151d;border:1px solid #383844;border-radius:18px;display:flex;gap:8px;box-shadow:0 18px 70px #0007}.searchbox input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:white;padding:13px 14px;font-size:15px}.searchbox input::placeholder{color:#777786}.primary{border:0;border-radius:12px;padding:0 22px;background:linear-gradient(110deg,var(--accent),#ff654f);color:white;font-weight:800;box-shadow:0 6px 20px #ff315833}.primary:active{transform:translateY(1px)}
+    .sources{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:18px}.source{border:1px solid var(--line);background:#111117;color:#c9c9d2;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:750}.source.active{border-color:#ff4568;color:#fff;background:#ff31581a}.source[data-source="xhamster"].active{border-color:#e5b64c;background:#e5b64c15}.source[data-source="all"].active{border-color:#a68aff;background:#a68aff18}
+    .layout{display:grid;grid-template-columns:250px 1fr;gap:22px;margin-top:44px}.filters,.results{background:#111117;border:1px solid var(--line);border-radius:var(--radius)}.filters{padding:20px;height:max-content}.section-title{font-size:13px;font-weight:850;display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.reset{border:0;background:none;color:#ff8196;font-size:11px}.field{margin:0 0 17px}.field label{display:block;font-size:11px;color:#b3b3c0;font-weight:750;margin-bottom:7px}.field select,.field input{width:100%;background:#191922;border:1px solid #30303d;border-radius:10px;padding:10px;color:#eee;outline:none}.field select:focus,.field input:focus,.searchbox:focus-within{border-color:#ff5574}.range{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check{display:flex;align-items:center;gap:9px;color:#c4c4cf;font-size:12px;margin:10px 0}.check input{accent-color:var(--accent)}
+    .results{padding:20px;min-width:0}.result-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.result-head h2{font-size:16px;margin:0}.count{color:var(--muted);font-size:12px;margin-top:3px}.sort{background:#191922;color:#ddd;border:1px solid #30303d;border-radius:9px;padding:9px;font-size:12px}.tabs{display:flex;gap:5px;background:#191922;padding:4px;border-radius:11px;width:max-content;margin-bottom:18px}.tab{border:0;background:transparent;color:#9999a8;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:750}.tab.active{background:#30303d;color:white}
+    .empty{min-height:300px;border:1px dashed #383844;border-radius:14px;display:grid;place-items:center;text-align:center;padding:30px}.empty-icon{width:52px;height:52px;margin:0 auto 13px;border-radius:16px;background:#ff315817;color:#ff718b;display:grid;place-items:center}.empty h3{font-size:16px;margin:0 0 6px}.empty p{max-width:380px;color:var(--muted);font-size:12px;margin:0}.hint{margin-top:16px;color:#737382;font-size:11px}
+    .notice{margin-top:22px;padding:13px 15px;border-radius:12px;background:#171720;border:1px solid #292936;color:#9999a8;font-size:11px}.notice strong{color:#ddd}.footer{border-top:1px solid #ffffff12;padding:22px 0;color:#777786;font-size:11px}.footer .shell{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .age{position:fixed;inset:0;z-index:30;background:#07070bf2;backdrop-filter:blur(15px);display:grid;place-items:center;padding:20px}.age-card{width:min(430px,100%);padding:30px;border:1px solid #39313b;border-radius:22px;background:#14121a;text-align:center;box-shadow:0 25px 100px #0009}.age-mark{width:58px;height:58px;border-radius:18px;margin:0 auto 18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:900;font-size:19px}.age-card h2{margin:0 0 8px;font-size:24px}.age-card p{color:var(--muted);font-size:13px;margin:0 0 20px}.age-actions{display:flex;gap:9px}.age-actions button{flex:1;padding:12px;border-radius:11px;font-weight:800}.secondary{background:#24232d;border:1px solid #3b3945;color:#ddd}.age-small{font-size:10px;color:#777786;margin-top:15px}
+    @media(max-width:760px){.shell{width:min(100% - 24px,600px)}header{height:64px}.topnote{display:none}main{padding:38px 0 48px}.hero p{font-size:14px}.searchbox{margin-top:24px}.searchbox input{padding:11px 8px;font-size:14px}.searchbox .primary{padding:0 14px}.layout{grid-template-columns:1fr;margin-top:28px;gap:12px}.filters{padding:15px}.filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.results{padding:15px}.result-head{align-items:flex-start}.sort{max-width:135px}.empty{min-height:240px}h1{letter-spacing:-1.8px}}
+    @media(max-width:390px){.brand{font-size:18px}.searchbox .primary{padding:0 10px;font-size:12px}.filter-grid{grid-template-columns:1fr}.age-actions{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header><div class="shell top">
+    <a class="brand" href="#" aria-label="PH-View accueil"><span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 10 6-10 6z"/></svg></span><span>PH<em>·</em>VIEW</span></a>
+    <span class="topnote">VIDEO DISCOVERY ENGINE <span style="color:#ff6b86">/</span> BETA</span>
+  </div></header>
+  <main class="shell">
+    <section class="hero">
+      <span class="eyebrow"><span class="dot"></span> Recherche multi-plateforme</span>
+      <h1>Trouvez mieux.<br><span class="gradient">Explorez autrement.</span></h1>
+      <p>Un seul endroit pour rechercher et organiser vos contenus favoris.</p>
+      <form class="searchbox" id="searchForm">
+        <input id="query" type="search" placeholder="Saisissez un titre, un mot-clé ou un tag…" autocomplete="off" aria-label="Recherche">
+        <button class="primary" type="submit">Rechercher&nbsp; →</button>
+      </form>
+      <div class="sources" role="group" aria-label="Plateformes">
+        <button class="source active" data-source="all" type="button">Toutes les plateformes</button>
+        <button class="source" data-source="pornhub" type="button">Pornhub</button>
+        <button class="source" data-source="xhamster" type="button">xHamster</button>
+      </div>
+    </section>
+    <section class="layout">
+      <aside class="filters">
+        <div class="section-title">Filtres avancés <button class="reset" id="reset">Réinitialiser</button></div>
+        <div class="filter-grid">
+          <div class="field"><label for="contentType">TYPE DE CONTENU</label><select id="contentType"><option value="videos">Vidéos</option><option value="playlists">Playlists / albums</option><option value="all">Tout le contenu</option></select></div>
+          <div class="field"><label for="sort">TRIER PAR</label><select id="sort"><option value="relevance">Pertinence</option><option value="popular">Popularité</option><option value="recent">Plus récent</option><option value="duration">Durée</option></select></div>
+          <div class="field"><label>DURÉE MIN. (MIN)</label><input id="minDuration" type="number" min="0" placeholder="Aucune"></div>
+          <div class="field"><label>DURÉE MAX. (MIN)</label><input id="maxDuration" type="number" min="0" placeholder="Aucune"></div>
+          <div class="field"><label for="date">DATE DE PUBLICATION</label><select id="date"><option value="any">Toutes les dates</option><option value="day">Dernières 24 heures</option><option value="week">Cette semaine</option><option value="month">Ce mois-ci</option></select></div>
+          <div class="field"><label for="platform">PLATEFORME</label><select id="platform"><option value="all">Toutes</option><option value="pornhub">Pornhub</option><option value="xhamster">xHamster</option></select></div>
+        </div>
+        <label class="check"><input id="exact" type="checkbox"> Expression exacte</label>
+        <label class="check"><input id="exclude" type="checkbox"> Exclure les résultats similaires</label>
+        <button class="primary" id="apply" type="button" style="width:100%;padding:11px;margin-top:9px">Appliquer les filtres</button>
+      </aside>
+      <section class="results">
+        <div class="result-head"><div><h2 id="resultTitle">Explorer les contenus</h2><div class="count" id="resultCount">En attente d'une recherche</div></div><select class="sort" id="sortTop" aria-label="Trier les résultats"><option value="relevance">Pertinence</option><option value="popular">Popularité</option><option value="recent">Plus récent</option></select></div>
+        <div class="tabs"><button class="tab active" data-tab="videos" type="button">Vidéos</button><button class="tab" data-tab="playlists" type="button">Playlists</button></div>
+        <div class="empty" id="emptyState"><div><div class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></div><h3>Votre prochaine recherche commence ici</h3><p>Choisissez une plateforme, saisissez un mot-clé et lancez votre recherche. Les connecteurs aux catalogues seront ajoutés dans la prochaine étape.</p><div class="hint">PH-View ne diffuse ni n'héberge de vidéos.</div></div></div>
+        <div class="notice"><strong>Version initiale :</strong> interface et filtres préparés. Les résultats réels nécessitent des connecteurs autorisés aux plateformes et un service backend ; aucune donnée fictive n'est présentée comme un résultat réel.</div>
+      </section>
+    </section>
+  </main>
+  <footer class="footer"><div class="shell"><span>© 2026 PH-View · Projet indépendant non affilié aux plateformes citées.</span><span>Accès réservé aux adultes · 18+</span></div></footer>
+  <div class="age" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+    <div class="age-card"><div class="age-mark">18+</div><h2 id="ageTitle">Avant de continuer</h2><p>Ce projet est destiné exclusivement aux personnes majeures. En continuant, vous confirmez avoir au moins 18 ans et être autorisé à consulter ce type de service dans votre pays.</p><div class="age-actions"><button class="primary" id="confirmAge" type="button">J'ai 18 ans ou plus</button><button class="secondary" id="leaveAge" type="button">Quitter</button></div><div class="age-small">PH-View est un outil de recherche indépendant, pas un hébergeur de contenu.</div></div>
+  </div>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let selectedSource = "all";
+    let selectedTab = "videos";
+    document.querySelectorAll(".source").forEach(button => button.addEventListener("click", () => {
+      selectedSource = button.dataset.source;
+      document.querySelectorAll(".source").forEach(item => item.classList.toggle("active", item === button));
+      $("platform").value = selectedSource;
+    }));
+    document.querySelectorAll(".tab").forEach(button => button.addEventListener("click", () => {
+      selectedTab = button.dataset.tab;
+      document.querySelectorAll(".tab").forEach(item => item.classList.toggle("active", item === button));
+      $("contentType").value = selectedTab;
+      $("resultTitle").textContent = selectedTab === "videos" ? "Recherche de vidéos" : "Recherche de playlists";
+    }));
+    function runSearch(){
+      const query = $("query").value.trim();
+      $("resultTitle").textContent = selectedTab === "videos" ? "Recherche de vidéos" : "Recherche de playlists";
+      $("resultCount").textContent = query ? 'Recherche prête : « ' + query + ' » · ' + $("platform").selectedOptions[0].text : "Saisissez un mot-clé pour commencer";
+      $("emptyState").querySelector("h3").textContent = query ? "Connecteurs à configurer" : "Votre prochaine recherche commence ici";
+      $("emptyState").querySelector("p").textContent = query ? "Votre interface est prête. La prochaine étape consiste à connecter les sources de données autorisées pour afficher des résultats réels." : "Choisissez une plateforme, saisissez un mot-clé et lancez votre recherche.";
+    }
+    $("searchForm").addEventListener("submit", event => {event.preventDefault();runSearch();});
+    $("apply").addEventListener("click",runSearch);
+    $("sortTop").addEventListener("change",()=>{$("sort").value=$("sortTop").value;});
+    $("reset").addEventListener("click",()=>{
+      ["query","minDuration","maxDuration"].forEach(id=>$(id).value="");
+      ["contentType","sort","date","platform"].forEach(id=>$(id).value=id==="contentType"?"videos":id==="sort"?"relevance":id==="date"?"any":"all");
+      $("exact").checked=false;$("exclude").checked=false;selectedSource="all";selectedTab="videos";
+      document.querySelectorAll(".source").forEach(item=>item.classList.toggle("active",item.dataset.source==="all"));
+      document.querySelectorAll(".tab").forEach(item=>item.classList.toggle("active",item.dataset.tab==="videos"));
+      $("resultCount").textContent="En attente d'une recherche";$("resultTitle").textContent="Explorer les contenus";
+      $("emptyState").querySelector("h3").textContent="Votre prochaine recherche commence ici";
+      $("emptyState").querySelector("p").textContent="Choisissez une plateforme, saisissez un mot-clé et lancez votre recherche. Les connecteurs aux catalogues seront ajoutés dans la prochaine étape.";
+    });
+    $("confirmAge").addEventListener("click",()=>$("ageGate").remove());
+    $("leaveAge").addEventListener("click",()=>{document.body.innerHTML='<main class="shell" style="padding-top:18vh;text-align:center"><h1>Accès fermé</h1><p style="color:#999">Vous devez être majeur pour accéder à ce projet.</p></main>';});
+  </script>
+</body>
+</html>
