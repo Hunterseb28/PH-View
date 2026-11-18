@@ -133,8 +133,12 @@
         endpoint.searchParams.set("page", String(currentPage));
         endpoint.searchParams.set("sort", sort);
         const response = await fetch(endpoint.toString());
-        const payload = await response.json();
-        if (!response.ok) throw new Error(payload.error || "Erreur du service de recherche.");
+        const responseText = await response.text();
+        if (!responseText.trim()) throw new Error("Le Worker a répondu avec un contenu vide (HTTP " + response.status + "). Vérifie le déploiement Cloudflare.");
+        let payload;
+        try { payload = JSON.parse(responseText); }
+        catch (_) { throw new Error("Réponse non JSON du Worker (HTTP " + response.status + "). Vérifie que le bon code worker.js est déployé."); }
+        if (!response.ok) throw new Error(payload.error || "Erreur du service de recherche (HTTP " + response.status + ").");
         const videos = Array.isArray(payload.videos) ? payload.videos : [];
         $("emptyState").hidden = videos.length > 0;
         $("videoResults").hidden = videos.length === 0;
