@@ -58,7 +58,7 @@ export default {
     }
 
     const upstream = new URL(API_BASE);
-    upstream.searchParams.set("search", query);
+    upstream.searchParams.set("q", query);
     upstream.searchParams.set("page", String(page));
     upstream.searchParams.set("ordering", order);
     upstream.searchParams.set("thumbsize", "medium");
