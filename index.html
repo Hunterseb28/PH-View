@@ -90,7 +90,7 @@
       $("resultTitle").textContent = selectedTab === "videos" ? "Recherche de vidéos" : "Recherche de playlists";
     }));
     // Remplacer cette URL après avoir publié worker.js sur Cloudflare.
-    const API_URL = "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev";
+    const API_URL = "https://ph-view-api.gouet-sebastien28.workers.dev";
     let currentPage = 1;
     async function runSearch(){
       const query = $("query").value.trim();
